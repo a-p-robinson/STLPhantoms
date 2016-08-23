@@ -1,0 +1,22 @@
+# Emacs temp files
+*.*~
+*~
+.#*
+
+# C/C++ objects
+*.o
+
+# svn bollocks
+.svn
+
+# Apple bullshit
+.DS_Store
+
+# Compiled python
+*.pyc
+
+# STL files
+*.stl
+
+# Dolphin directory files
+.directory
