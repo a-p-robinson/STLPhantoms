@@ -75,7 +75,7 @@ with open(media_ascii_file, "r") as file:
 #
 # Parsing organs ascii file
 #
-with open(organ_ascii_file, "r") as file:
+with open("/home/apr/Work/NPL/MRT2/Phantoms/P110 data V1.2AM/AM_organs.dat", "r") as file:
     fieldwidths = (5, -1, 47,-1,3,-4,5)  # negative widths represent ignored padding fields
     fmtstring = ' '.join('{}{}'.format(abs(fw), 'x' if fw < 0 else 's')
                         for fw in fieldwidths)
