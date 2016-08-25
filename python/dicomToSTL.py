@@ -42,6 +42,8 @@ class dicomSTL:
         
         relaxFactor      = 0.01 # Specify the relaxation factor for Laplacian smoothing. 
         smoothIterations = 700  # Specify number of smoothing iterations
+
+        debug = 0 # (no vis)
         #----------------------------------------------
 
         #---------------------------------------------------
@@ -57,11 +59,12 @@ class dicomSTL:
         
         organMask=sitk.AntiAliasBinary(organMask,aaConverge) #Output from antialias filter is float64    
 
-        # Show the final histogram
-        vis.itkHist(organMask, "itkAA")
-        
-        # Show the final itk image
-        vis.itkShow(organMask,2)
+        if debug == 1:
+            # Show the final histogram
+            vis.itkHist(organMask, "itkAA")
+        if debug == 2:
+            # Show the final itk image
+            vis.itkShow(organMask,2)
         #---------------------------------------------------
 
         #---------------------------------------------------
@@ -127,8 +130,9 @@ class dicomSTL:
 
         #---------------------------------------------------
         # Show iso surface
-        print "Rendering iso surface..."
-        vis.showIso(organPolys, 'Original Shell')
+        if debug == 3:
+            print "Rendering iso surface..."
+            vis.showIso(organPolys, 'Original Shell')
         #---------------------------------------------------
         
         #--------------------------------------------------
@@ -170,8 +174,9 @@ class dicomSTL:
         
         #---------------------------------------------------
         # Show iso surface
-        print "Rendering smooth iso surface..."
-        vis.showIso(organPolysSmooth, 'Smoothed Shell')
+        if debug ==3:
+            print "Rendering smooth iso surface..."
+            vis.showIso(organPolysSmooth, 'Smoothed Shell')
         #---------------------------------------------------
         
         #---------------------------------------------------

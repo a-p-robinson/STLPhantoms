@@ -81,9 +81,9 @@ class readICRP:
         print 'ICRP 110 Refernce Phantom [' + self.mod + ']'
         print '---------------------------------'
         for i, val in enumerate(self.organName):
-            print ' {} {:4.0f} {} {}'.format('organID:',self.organID[i],'name:',val)
+            print ' {} {:4.0f} {} {}'.format('organID:',self.organID[i],'name:',val)            
         print '---------------------------------'
-            
+        
     # Get the data and return itk image
     # option: organ = a list of organs you want to include in the image mask
     # option: value = value to set included voxels to (ignored if negative)
@@ -94,11 +94,7 @@ class readICRP:
         # Reshape into 3D
         icrp3D = icrp3D.reshape(self.ConstPixelDims, order='F')
                 
-        # Pick the organs we want to use
-
-        # This shoudle really use a list
-        # make a list of all vlaues anfd then use if in list
-        
+        # Pick the organs we want to use        
         foundOrgan = 0;
         organThreshold = []
         if organ[0] != 'all':
