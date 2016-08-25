@@ -49,7 +49,7 @@ class dicomSTL:
         print 'Manipulating itk images...'
         
         # Use this for masked CT
-        organMask=sitk.BinaryThreshold(itkI,1,thresholdValue,1,0)
+        organMask=sitk.BinaryThreshold(self.itkI,1,self.thresholdValue,1,0)
         
         organMask=sitk.BinaryClosingByReconstruction(organMask,30)
         
@@ -72,15 +72,15 @@ class dicomSTL:
         dataImporter.CopyImportVoidPointer(data_string, len(data_string))
         dataImporter.SetDataScalarTypeToDouble()
         dataImporter.SetNumberOfScalarComponents(1)
-        dataImporter.SetDataExtent(0,ConstPixelDims[2]-1,0,ConstPixelDims[1]-1,0,ConstPixelDims[0]-1)   # z y x
-        dataImporter.SetWholeExtent(0,ConstPixelDims[2]-1, 0,ConstPixelDims[1]-1,0,ConstPixelDims[0]-1) # z y x
+        dataImporter.SetDataExtent(0,self.ConstPixelDims[2]-1,0,self.ConstPixelDims[1]-1,0,self.ConstPixelDims[0]-1)   # z y x
+        dataImporter.SetWholeExtent(0,self.ConstPixelDims[2]-1, 0,self.ConstPixelDims[1]-1,0,self.ConstPixelDims[0]-1) # z y x
         
         dataImporter.Update()
 
         # Create VTK Image volume and set origin and spacing
         organVolume=dataImporter.GetOutput()  
-        organVolume.SetOrigin(origin[1], origin[1], origin[0])                                 # z y x
-        organVolume.SetSpacing(ConstPixelSpacing[2],ConstPixelSpacing[1],ConstPixelSpacing[0]) # z y x
+        organVolume.SetOrigin(self.origin[1], self.origin[1], self.origin[0])                                 # z y x
+        organVolume.SetSpacing(self.ConstPixelSpacing[2],self.ConstPixelSpacing[1],self.ConstPixelSpacing[0]) # z y x
         #---------------------------------------------------
 
         #---------------------------------------------------
@@ -177,16 +177,16 @@ class dicomSTL:
         #---------------------------------------------------
         # Write STL
         print "Writing STL Shell..."
-        vc.writeSTL(organPolys, outputFile, '_shell.stl' )
+        vc.writeSTL(organPolys, self.outputFile, '_shell.stl' )
         
         print "Writing STL Shell (smoothed)..."
-        vc.writeSTL(organPolysSmooth, outputFile, '_shell_smoothed.stl' )
+        vc.writeSTL(organPolysSmooth, self.outputFile, '_shell_smoothed.stl' )
         
         print "Writing STL solid inner volume..."
-        vc.writeSTL(organVol, outputFile, '_solid.stl' )
+        vc.writeSTL(organVol, self.outputFile, '_solid.stl' )
         
         print "Writing STL solid inner volume (smoothed)..."
-        vc.writeSTL(organVolSmooth, outputFile, '_solid_smoothed.stl' )
+        vc.writeSTL(organVolSmooth, self.outputFile, '_solid_smoothed.stl' )
         
         #---------------------------------------------------
 
