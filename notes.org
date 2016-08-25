@@ -20,11 +20,8 @@ Table 5.1 Main characteristics of the adult male and female reference computatio
 | Number of slices                   | 220 (+2)  | 346 (+2) |
 |------------------------------------+-----------+----------|
 
-This has the data files that we need (I think).
+This has the data files that we need
 http://www.icrp.org/publication.asp?id=ICRP%20Publication%20110
-
-Reading the files
-http://www.fluka.org/web_archive/earchive/new-fluka-discuss/9321.html
 
 * XCAT
 
