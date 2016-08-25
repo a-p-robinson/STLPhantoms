@@ -90,7 +90,7 @@ for i, val in enumerate(organName):
 print organ
 
 # Mask based on that organ
-icrp3D[icrp3D != organ] = 0
+#icrp3D[icrp3D != organ] = 0
 
 # Show the raw icrp data
 vis.arrayShow(icrp3D, 2)
