@@ -14,6 +14,8 @@ import SimpleITK as sitk
 import re
 import sys
 
+import itkStats as ist
+
 class readICRP:
 
     # Initilisation:
@@ -34,22 +36,25 @@ class readICRP:
             self.ConstPixelSpacing = (2.137, 2.137, 8.0)
             self.origin = (0,0,0)
 
-        elif: model == 'female':
+        elif model == 'female':
             self.mod = 'AF'
-            self.ConstPixelDims = (254, 127, 222)
-            self.ConstPixelSpacing = (2.137, 2.137, 8.0)
+            self.ConstPixelDims = (299, 137, 348)
+            self.ConstPixelSpacing = (1.755, 1.755, 4.84)
             self.origin = (0,0,0)
         else:
-              print >> sys.stderr, "Something is seriously wrong."
+              print >> sys.stderr, "Unkown model: " + model
               sys.exit(1)
               
-        self.dataFile =  dataDir + '/' + self.model + ' /' + self.model + '.dat'
-        self.organFile =  dataDir + '/' + self.model + ' /' + self.model + '_organs.dat'
+        self.dataFile =  dataDir + '/' + self.mod + '/' + self.mod + '.dat'
+        self.organFile =  dataDir + '/' + self.mod + '/' + self.mod + '_organs.dat'
 
         self.organName = organ
+
+    # Get the data in itk format
+    def getData(self):
         
         # Read in data
-        icrpData = np.fromfile(seld.dataFile, sep=" ")
+        icrpData = np.fromfile(self.dataFile, sep=" ")
         icrp3D = icrpData.reshape(self.ConstPixelDims, order='F')
         nPixelsOrgans = np.count_nonzero(icrp3D)
         print "Read in ", nPixelsOrgans, " voxels from ", self.dataFile
@@ -84,18 +89,15 @@ class readICRP:
         if self.organName != 'all':
             for i, val in enumerate(organName):
                 if val == self.organName:
-                    organ = organID[i] 
+                    organThreshold = organID[i] 
                     print "Selecting " + self.organName
                     # Mask based on that organ
-                    icrp3D[icrp3D != self.organName] = 0
-                else:
-                    print >> sys.stderr, "Something is seriously wrong."
-                    sys.exit(1)
+                    icrp3D[icrp3D != organThreshold] = 0
+                    foundOrgan = 1
+            if foundOrgan != 1:
+                print >> sys.stderr, "Organ not found: " + self.organName
+                sys.exit(1)
                  
-
-        # Show the raw icrp data
-        vis.arrayShow(icrp3D, 2)
-
         # Create ITKimages from arrays
         print 'Creating raw itk images...'
         itkOrgan =sitk.GetImageFromArray(icrp3D)
@@ -103,4 +105,5 @@ class readICRP:
         ist.itkInfo(itkOrgan)
 
         # Returen the image and pixel dimensions and threshold
-        
+        #return itkOrgan, self.ConstPixelDims, self.ConstPixelSpacing, self.origin, organThreshold
+        return itkOrgan, organThreshold
