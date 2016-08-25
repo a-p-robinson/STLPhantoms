@@ -88,4 +88,4 @@ def writeSTL(polys, filename, extension):
     organWriter.SetInputData(polys)
     organWriter.Write()
 
-    print "Writen STL Shell [", tmpFile, "]"
+    print "Written STL Shell [", tmpFile, "]"

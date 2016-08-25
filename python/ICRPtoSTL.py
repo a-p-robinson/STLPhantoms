@@ -1,39 +1,34 @@
-################################################################################
-# ImportICRP.py                                                                #
-#                                                                              #
-# APR: 23/08/16                                                                #
-#                                                                              #
-# Import the ICRP phantom data from ICRP Adult computational refernce phantoms #
-# http://www.icrp.org/publication.asp?id=ICRP%20Publication%20110              #
-#                                                                              #
-# http://www.icrp.org/docs/V1.2.zip                                            #
-################################################################################
-
-import numpy as np
+#################################################################################
+# ICRPtoSTL.py                                                                  #
+#                                                                               #
+# APR: 25/08/16                                                                 #
+#                                                                               #
+# Convert the ICRP phantom data to STL files.                                   #
+#################################################################################
+                                                             
 import time
-import SimpleITK as sitk
-import re
-import vtk
 
-import showData as vis
-import itkStats as ist
-
-import readICRP as icrp
-import dicomToSTL as dts
+import readICRP as icrp  # Reads in the ICRP phantom and retuen an itk image
+import showData as vis   # Show slices of itk data
+import dicomToSTL as dts # Conert an itk iamge to STL file
 
 # Start timer
 startTime = time.time()
 
-dataDir = "/home/apr/Work/NPL/MRT2/Phantoms/P110 data V1.2/"
+#-----------------------------------------
+# Variables:
+dataDir = "/home/apr/Work/NPL/MRT2/Phantoms/P110 data V1.2/" # Location of directory with ICRP data
+#-----------------------------------------
 
+# read in the ICRP data
 data = icrp.readICRP(dataDir,'male','spleen')
-#itkOrgan, ConstPixelDims, ConstPixelSpacing, origin, organThrehold = data.getData()
-itkOrgan, organThreshold = data.getData()
+itkImage, organThreshold = data.getData()
 
 # Show the itk image
-vis.itkShow(itkOrgan,2)
+vis.itkShow(itkImage,2)
 
-abc = dts.dicomSTL(itkOrgan, data.ConstPixelDims, data.ConstPixelSpacing, data.origin, organThreshold, '/home/apr/Work/NPL/MRT2/Phantoms/test')
+# Convert the itk data to stl
+abc = dts.dicomSTL(itkImage, data.ConstPixelDims, data.ConstPixelSpacing, data.origin, organThreshold, '/home/apr/Work/NPL/MRT2/Phantoms/test')
 abc.doAllTheThings()
 
 # Finished

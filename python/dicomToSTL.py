@@ -17,18 +17,18 @@ import vtkClip  as vc
 
 class dicomSTL:
 
-    # Initilisation:
+    # Initialisation:
     # Options: 
     def __init__(self, itkImage, PixelDims, PixelSpacing, ImageOrigin, threshold, outputFilePath):
 
         self.itkI              = itkImage       # The image that we want to work with
-        self.outputFile        = outputFilePath # Common part of oputput file path
+        self.outputFile        = outputFilePath # Common part of output file path
 
         self.ConstPixelDims    = PixelDims      # Number of Pixels
         self.ConstPixelSpacing = PixelSpacing   # Voxel sizes (mm)
         self.origin            = ImageOrigin    # Center of the image (mm)
 
-        self.thresholdValue    = threshold      # Define what value corresposnds to inside the VOI
+        self.thresholdValue    = threshold      # Define what value corresponds to inside the VOI
         
     def doAllTheThings(self):
         
@@ -41,11 +41,11 @@ class dicomSTL:
         aaConverge     = 0.00005 # MaximumRMSChange for anti-aliasing (smaller = tighter but slower)
         
         relaxFactor      = 0.01 # Specify the relaxation factor for Laplacian smoothing. 
-        smoothIterations = 700  # Specifiy number of smoothing iterations
+        smoothIterations = 700  # Specify number of smoothing iterations
         #----------------------------------------------
 
         #---------------------------------------------------
-        # Maniuplate the itk images
+        # Manipulate the itk images
         print 'Manipulating itk images...'
         
         # Use this for masked CT

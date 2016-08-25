@@ -1,13 +1,13 @@
-################################################################################
-# readICRP.py                                                                  #
-#                                                                              #
-# APR: 23/08/16                                                                #
-#                                                                              #
-# Import the ICRP phantom data from ICRP Adult computational refernce phantoms #
-# http://www.icrp.org/publication.asp?id=ICRP%20Publication%20110              #
-#                                                                              #
-# http://www.icrp.org/docs/V1.2.zip                                            #
-################################################################################
+#################################################################################
+# readICRP.py                                                                   #
+#                                                                               #
+# APR: 23/08/16                                                                 #
+#                                                                               #
+# Import the ICRP phantom data from ICRP Adult computational reference phantoms #
+# http://www.icrp.org/publication.asp?id=ICRP%20Publication%20110               #
+#                                                                               #
+# http://www.icrp.org/docs/V1.2.zip                                             #
+#################################################################################
 
 import numpy as np
 import SimpleITK as sitk
@@ -18,10 +18,10 @@ import itkStats as ist
 
 class readICRP:
 
-    # Initilisation:
+    # Initialisation:
     #
     # Options:
-    #   dataDir = path to ICRP phatnom data
+    #   dataDir = path to ICRP phantom data
     #   model = male/female
     #   organ = all or name of organ ie, 'spleen'
     #
@@ -42,7 +42,7 @@ class readICRP:
             self.ConstPixelSpacing = (1.755, 1.755, 4.84)
             self.origin = (0,0,0)
         else:
-              print >> sys.stderr, "Unkown model: " + model
+              print >> sys.stderr, "Unknown model: " + model
               sys.exit(1)
               
         self.dataFile =  dataDir + '/' + self.mod + '/' + self.mod + '.dat'
@@ -50,7 +50,7 @@ class readICRP:
 
         self.organName = organ
 
-    # Get the data in itk format
+    # Get the data and return itk image
     def getData(self):
         
         # Read in data
@@ -104,6 +104,5 @@ class readICRP:
         print '\n[itkOrgan Info]'
         ist.itkInfo(itkOrgan)
 
-        # Returen the image and pixel dimensions and threshold
-        #return itkOrgan, self.ConstPixelDims, self.ConstPixelSpacing, self.origin, organThreshold
+        # Return the image and threshold
         return itkOrgan, organThreshold
