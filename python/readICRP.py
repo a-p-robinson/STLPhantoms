@@ -25,7 +25,7 @@ class readICRP:
     #   model = male/female
     #   organ = all or name of organ ie, 'spleen'
     #
-    def __init__(self, dataDir, model, organ='all'):
+    def __init__(self, dataDir, model):
 
         # Define the input based on what the user has requested
         self.dataDir = dataDir
@@ -48,61 +48,91 @@ class readICRP:
         self.dataFile =  dataDir + '/' + self.mod + '/' + self.mod + '.dat'
         self.organFile =  dataDir + '/' + self.mod + '/' + self.mod + '_organs.dat'
 
-        self.organName = organ
-
-    # Get the data and return itk image
-    def getData(self):
-        
         # Read in data
-        icrpData = np.fromfile(self.dataFile, sep=" ")
-        icrp3D = icrpData.reshape(self.ConstPixelDims, order='F')
-        nPixelsOrgans = np.count_nonzero(icrp3D)
+        self.icrpData = np.fromfile(self.dataFile, sep=" ")
+        nPixelsOrgans = np.count_nonzero(self.icrpData)
         print "Read in ", nPixelsOrgans, " voxels from ", self.dataFile
 
         # Read in the organ file file
         with open(self.organFile, "r") as file:
 
-            organID = []
-            organName = []
-            organTissueID = []
-            organDensity = []
+            self.organID = []
+            self.organName = []
+            self.organTissueID = []
+            self.organDensity = []
     
             # File header
             info_lines = []
             for line in range(0,4):
                 info_lines.append(file.readline())
-        
+
+            # File contents
             for line in file.readlines():
                 line = line.rstrip('\n\r')
                 words = re.split(" *", line)
-                organID.append(int(words[0]))
-                organTissueID.append(int(words[-2]))
-                organDensity.append(float(words[-1]))
-                organName.append(re.sub('[,()]', '', ("_".join(words[1:-2])) ).lower())
+                self.organID.append(int(words[0]))
+                self.organTissueID.append(int(words[-2]))
+                self.organDensity.append(float(words[-1]))
+                self.organName.append(re.sub('[,()]', '', ("_".join(words[1:-2])) ).lower())
 
-            print organID
-            print organName;
-            print organTissueID
-            print organDensity
+    # Show the organs which are available in the model
+    def listOrgans(self):
+        print '---------------------------------'
+        print 'ICRP 110 Refernce Phantom [' + self.mod + ']'
+        print '---------------------------------'
+        for i, val in enumerate(self.organName):
+            print ' {} {:4.0f} {} {}'.format('organID:',self.organID[i],'name:',val)
+        print '---------------------------------'
+            
+    # Get the data and return itk image
+    # option: organ = a list of organs you want to include in the image mask
+    # option: value = value to set included voxels to (ignored if negative)
+    def getData(self, organ=['all'], value=-99):
         
-        # Pick the organ we want to use
-        if self.organName != 'all':
-            for i, val in enumerate(organName):
-                if val == self.organName:
-                    organThreshold = organID[i] 
-                    print "Selecting " + self.organName
-                    # Mask based on that organ
-                    icrp3D[icrp3D != organThreshold] = 0
+        # Create a local copy of the data
+        icrp3D = np.copy(self.icrpData)
+        # Reshape into 3D
+        icrp3D = icrp3D.reshape(self.ConstPixelDims, order='F')
+                
+        # Pick the organs we want to use
+
+        # This shoudle really use a list
+        # make a list of all vlaues anfd then use if in list
+        
+        foundOrgan = 0;
+        organThreshold = []
+        if organ[0] != 'all':
+            
+            for i, val in enumerate(self.organName):
+                if val in organ:
+                    organThreshold.append(self.organID[i]) 
+                    print "Selecting " + val
                     foundOrgan = 1
-            if foundOrgan != 1:
-                print >> sys.stderr, "Organ not found: " + self.organName
+                    
+            if foundOrgan == 0:
+                print >> sys.stderr, "Organ not found: ".join(organ)
                 sys.exit(1)
-                 
+            else:
+                # Mask local data based on the requested organs
+                final = np.copy(icrp3D)
+                final.fill(0)
+                for val in organThreshold:
+                    # Copy the data
+                    tmp1 = np.copy(icrp3D)
+                    # Mask the temp copy
+                    tmp1[icrp3D != val] = 0
+                    # Add temp array to final
+                    final = np.add(final,tmp1)
+
+                # Set the included values to value if provided
+                if value > 0:
+                    final[final !=0] = value
+                    
         # Create ITKimages from arrays
         print 'Creating raw itk images...'
-        itkOrgan =sitk.GetImageFromArray(icrp3D)
+        itkOrgan =sitk.GetImageFromArray(final)
         print '\n[itkOrgan Info]'
         ist.itkInfo(itkOrgan)
 
-        # Return the image and threshold
+        # Return the image and threshold value (value of the non-zero voxels)
         return itkOrgan, organThreshold

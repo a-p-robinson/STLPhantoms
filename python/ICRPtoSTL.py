@@ -21,14 +21,15 @@ dataDir = "/home/apr/Work/NPL/MRT2/Phantoms/P110 data V1.2/" # Location of direc
 #-----------------------------------------
 
 # read in the ICRP data
-data = icrp.readICRP(dataDir,'male','spleen')
-itkImage, organThreshold = data.getData()
+data = icrp.readICRP(dataDir,'male')
+data.listOrgans()
+itkImage, organThreshold = data.getData(['spleen','liver'], 100)
 
 # Show the itk image
 vis.itkShow(itkImage,2)
 
 # Convert the itk data to stl
-abc = dts.dicomSTL(itkImage, data.ConstPixelDims, data.ConstPixelSpacing, data.origin, organThreshold, '/home/apr/Work/NPL/MRT2/Phantoms/test')
+abc = dts.dicomSTL(itkImage, data.ConstPixelDims, data.ConstPixelSpacing, data.origin, 100, '/home/apr/Work/NPL/MRT2/Phantoms/test')
 abc.doAllTheThings()
 
 # Finished
