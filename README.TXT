@@ -1,8 +1,8 @@
 
  ##############################################################################
- # Code for generating MRTDosimetry Phantom STL models			      #
+ # Code for generating STL Phantom models	                              #
  # 									      #
- # Author: Andrew Robinson (andrew.robinson@npl.co.uk)			      #
+ # Author: Andrew Robinson (andrew@mandrew.net) 			      #
  # 									      #
  # This code provides methods for converting voxelised data to STL files.     #
  # 									      #
