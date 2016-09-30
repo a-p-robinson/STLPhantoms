@@ -94,7 +94,7 @@ class readICRP:
     # Show the organs which are available in the model
     def listOrgans(self):
         print '---------------------------------'
-        print 'ICRP 110 Refernce Phantom [' + self.mod + ']'
+        print 'ICRP 110 Reference Phantom [' + self.mod + ']'
         print '---------------------------------'
         for i, val in enumerate(self.organName):
             print ' {} {:4.0f} {} {}'.format('organID:',self.organID[i],'name:',val)            

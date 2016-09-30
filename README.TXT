@@ -1,26 +1,26 @@
 
- ##############################################################################
- # Code for generating STL Phantom models	                              #
- # 									      #
- # Author: Andrew Robinson (andrew@mandrew.net) 			      #
- # 									      #
- # This code provides methods for converting voxelised data to STL files.     #
- # 									      #
- # ++ Currently supported:						      #
- # 									      #
- #  * ICRP 110								      #
- #    http://www.icrp.org/publication.asp?id=ICRP%20Publication%20110	      #
- #    - Phantom data files must be supplied seperatly			      #
- # 									      #
- # ++ Additional available code (please contact for details):                 #
- #                                                                            #
- #  * Dicom image (with optional binary mask)				      #
- #    This code is available but has nt yet been integrated into this release.#
- # 									      #
- # ++ Still to be implemented:						      #
- # 									      #
- #  * XCAT (Need to get access to data)					      #
- ##############################################################################
+ ###############################################################################
+ # Code for generating STL Phantom models	                               #
+ # 									       #
+ # Author: Andrew Robinson (andrew@mandrew.net) 			       #
+ # 									       #
+ # This code provides methods for converting voxelised data to STL files.      #
+ # 									       #
+ # ++ Currently supported:						       #
+ # 									       #
+ #  * ICRP 110								       #
+ #    http://www.icrp.org/publication.asp?id=ICRP%20Publication%20110	       #
+ #    - Phantom data files must be supplied separately			       #
+ # 									       #
+ # ++ Additional available code (please contact for details):                  #
+ #                                                                             #
+ #  * Dicom image (with optional binary mask)				       #
+ #    This code is available but has not yet been integrated into this release.#
+ # 									       #
+ # ++ Still to be implemented:						       #
+ # 									       #
+ #  * XCAT (Need to get access to data)					       #
+ ###############################################################################
  									 
 ######
 Usage:
@@ -32,10 +32,10 @@ Usage:
 2. Edit "dataDir" variable in python/ICRPtoSTL.py to point to location of data
 3. python python/ICRPtoSTL.py MODEL NAME
  - where MODEL = male or female
- - and   NAME  is chossen from the following list.
+ - and   NAME  is chosen from the following list.
 
 ---------------------------------
-ICRP 110 Refernce Phantom [AM]
+ICRP 110 Reference Phantom [AM]
 ---------------------------------
  organID:    1 name: adrenal_left
  organID:    2 name: adrenal_right
