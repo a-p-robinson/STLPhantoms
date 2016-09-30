@@ -11,7 +11,7 @@ import argparse
 
 import readICRP as icrp  # Reads in the ICRP phantom and retuen an itk image
 import showData as vis   # Show slices of itk data
-import dicomToSTL as dts # Conert an itk iamge to STL file
+import dicomToSTL as dts # Conert an itk image to STL file
 
 # Start timer
 startTime = time.time()
@@ -41,8 +41,8 @@ debug = 0
 # read in the ICRP data
 data = icrp.readICRP(dataDir,model)
 
-# List teh organs whcih are available
-#data.listOrgans()
+# # List the organs which are available
+# data.listOrgans()
 
 # Get the organ dat as an itk image
 itkImage, organThreshold = data.getData(organs, 100)
